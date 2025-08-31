@@ -11,16 +11,24 @@ Install python:  https://www.python.org/downloads/   during installation I recom
 
 Install Visual Studio Code (if desired): https://code.visualstudio.com/download
 
+Install Tesseract-OCR: https://docs.coro.net/featured/agent/install-tesseract-windows/
+
 Install Last War on the PC, you can chose to run behind an emulator if desired, this will not impact the bot since it runs 100% off of pixel locations.
  - If you are super nerdy and want to run it on a mobile device you can also use a terminal emulator on a mobile to perform the setup.
 
+In commandlines or code:
 You will need to run "pip install" for several of the import calls for the code one of the most important being pyautogui as it holds many of the dependencies.
 
-MouseLocation.py will assist in inputing the proper locations in the code where a "click" is required for approval and rejections as well as cycling through the titles. 
+MouseLocation.py will assist in inputting the proper locations in the code where a "click" is required for approval and rejections as well as cycling through the titles. 
 
 TestOCR.py will assist in ensuring the alliance name is being read properly and may require some movement on location to get the alliance name inside the "box".
 
-VPBot.py is the main code that will need updated with the alliance names that are approved to get buffs, locations for the titles to be selected, the "list" access button, where the approve, reject, and confirm buttons are, and where to close out of the windows.
+VPBot.py is the main code that will need updated with:
+ - Line 13: the file path to tesseract.exe
+ - Line 15: the alliance names that are approved to get buffs
+ - Line 34: The name/list region, where it picks up the alliance name within the "list"
+ - Line 19-23: locations for the titles to be selected
+ - Line 27-31: the "list" access button, where the approve, reject, and confirm buttons are, and where to close/exit out of the windows.
 
 
 
