@@ -1,6 +1,8 @@
 # VP-Bot
 Automate the VP based on alliance name for approval.
 
+You can break out of the code - stop running it by using <Ctrl> + <c> buttons.
+
 There are some personal preferences in here but do as you wish and what makes life simpler for you.
 Visual Studio Code is easy way to run it or cmd or powershell, whatever your flavor.
 
@@ -31,6 +33,7 @@ VPBot.py is the main code that will need updated with:
  - Line 34: The name/list region, where it picks up the alliance name within the "list"
  - Line 19-23: locations for the titles to be selected
  - Line 27-31: the "list" access button, where the approve, reject, and confirm buttons are, and where to close/exit out of the windows.
+ - Line 41-44: the "click drag" configuration.  This will help in preventing location issues during the approvals when the list grows longer than the initial screen load length.
 
 
 
