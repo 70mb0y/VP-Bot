@@ -21,6 +21,8 @@ You will need to run "pip install" for several of the import calls for the code 
 
 MouseLocation.py will assist in inputting the proper locations in the code where a "click" is required for approval and rejections as well as cycling through the titles. 
 
+ScrollUp.py will assist with the "list" when it is longer than the initial display.  You will need to use MouseLocation.py to identify where the mouse position needs to start. Then also, the top item on the list and then measure to the bottom of the list box, not the actual list.  Do the math to identify how much Y is from the top of this box to the bottom and this will be the input in the script to allow the drag motion to occur properly.
+
 TestOCR.py will assist in ensuring the alliance name is being read properly and may require some movement on location to get the alliance name inside the "box".
 
 VPBot.py is the main code that will need updated with:
