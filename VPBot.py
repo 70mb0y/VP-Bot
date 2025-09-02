@@ -37,6 +37,12 @@ list_region = (830, 285, 80, 40)  # slightly larger for OCR
 REJECT_UNKNOWN = True  # Reject names not in the whitelist
 FUZZ_THRESHOLD = 60    # minimum similarity to count as approved
 
+# Drag motion config
+drag_x, drag_y = 1138, 849  # start near list_button (adjust if needed)
+drag_distance = 300         # pixels down
+drag_duration = 0.5         # drag speed
+drag_repeats = 6            # number of drags
+
 # --- HELPERS ---
 
 def read_name_from_region():
@@ -91,20 +97,28 @@ def match_to_whitelist(ocr_name):
 def exit_back():
     """Consistent exit sequence used in multiple places."""
     pyautogui.click(exit_btn)
-    time.sleep(5)
+    time.sleep(4)
     pyautogui.click(exit_btn)
-    time.sleep(5)
+    time.sleep(4)
 
 # --- CORE FLOW ---
 
 def process_slot(slot_pos):
     # Enter slot
     pyautogui.click(slot_pos)
-    time.sleep(5)
+    time.sleep(4)
 
     # Open List pane
     pyautogui.click(list_button)
-    time.sleep(5)
+    time.sleep(4)
+
+    # >>> Perform 5 drag motions down <<<
+    for i in range(drag_repeats):
+        pyautogui.moveTo(drag_x, drag_y, duration=0.3)
+        pyautogui.mouseDown()
+        pyautogui.moveRel(0, drag_distance, duration=drag_duration)
+        pyautogui.mouseUp()
+        time.sleep(0.5)
 
     # Read name
     name, conf = read_name_from_region()
@@ -119,14 +133,14 @@ def process_slot(slot_pos):
     if matched:
         pyautogui.click(approve_btn)
         print(f"✅ Approved (OCR: '{name}' → '{matched}', score={score})")
-        time.sleep(5)
+        time.sleep(4)
     else:
         print(f"❌ Not in whitelist (OCR: '{name}')")
         if REJECT_UNKNOWN:
             pyautogui.click(reject_btn)
-            time.sleep(5)
+            time.sleep(4)
             pyautogui.click(close_confirm)
-            time.sleep(5)
+            time.sleep(4)
 
     # Exit back to main screen
     exit_back()
