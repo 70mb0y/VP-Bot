@@ -10,37 +10,38 @@ from rapidfuzz import fuzz, process
 time.sleep(5)  # small delay before script starts to allow navigation to game screen
 
 # --- CONFIG ---
-pytesseract.pytesseract.tesseract_cmd = r"C:\Users\tesseract.exe"
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 approved_names = ["RomO", "LODZ", "Vudu", "GroW", "BEQI", "DKSI", "DkCy", "xESE", "BAMF", "K4BR"]
 
 # Slots to process
 slots = [
-    (957, 537),   # Slot 2 Strategy
-    (1107, 551),  # Slot 3 Defense
-    (813, 724),   # Slot 4 Development
-    (958, 719),   # Slot 5 Science
-    (1100, 723),  # Slot 6 Interior
+    (681, 383),  # Slot 2 Strategy
+    (786, 392),  # Slot 3 Defense
+    (573, 518),  # Slot 4 Development
+    (683, 523),  # Slot 5 Science
+    (790, 519),  # Slot 6 Interior
 ]
 
 # Buttons (calibrate these)
-list_button   = (1138, 849)
-approve_btn   = (1062, 316)
-reject_btn    = (1134, 318)
-exit_btn      = (1166, 211)
-close_confirm = (1042, 722)
+list_button   = (815, 617)
+approve_btn   = (764, 217)
+reject_btn    = (812, 217)
+exit_btn      = (836, 134)
+close_confirm = (746, 516)
 
 # Region where a single name appears (x, y, width, height)
-list_region = (830, 285, 80, 40)  # slightly larger for OCR
+list_region = (595, 200, 50, 20)  # slightly larger for OCR
 
 # Behavior toggles / thresholds
 REJECT_UNKNOWN = True  # Reject names not in the whitelist
 FUZZ_THRESHOLD = 60    # minimum similarity to count as approved
 
-# Drag motion config
-drag_x, drag_y = 1138, 849  # start near list_button (adjust if needed)
-drag_distance = 100         # smaller drag per name so each check moves down
-drag_duration = 0.4         # drag speed
+# --- CONFIG ---
+drag_x, drag_y = 663, 200         # Starting position (where to click and hold)
+drag_distance = 500     # Pixels to drag down
+drag_duration = 0.5     # Seconds to drag
+drag_repeats = 6        # Number of drags
 
 # --- HELPERS ---
 
@@ -111,33 +112,37 @@ def process_slot(slot_pos):
     pyautogui.click(list_button)
     time.sleep(4)
 
-    # Perform 5 approval/rejection checks in sequence
-    for i in range(5):
-        name, conf = read_name_from_region()
-        print(f"[Check {i+1}/5] Detected name: {name!r}")
-
-        if not name:
-            print("⚠️ No valid name detected — skipping this check.")
-        else:
-            matched, score = match_to_whitelist(name)
-            if matched:
-                pyautogui.click(approve_btn)
-                print(f"✅ Approved (OCR: '{name}' → '{matched}', score={score})")
-                time.sleep(2)
-            else:
-                print(f"❌ Not in whitelist (OCR: '{name}')")
-                if REJECT_UNKNOWN:
-                    pyautogui.click(reject_btn)
-                    time.sleep(2)
-                    pyautogui.click(close_confirm)
-                    time.sleep(2)
-
-        # Drag down slightly to see the next candidate
-        pyautogui.moveTo(drag_x, drag_y, duration=0.2)
+    # >>> Perform 6 drag motions down <<<
+    for i in range(drag_repeats):
+        pyautogui.moveTo(drag_x, drag_y, duration=.03)
         pyautogui.mouseDown()
         pyautogui.moveRel(0, drag_distance, duration=drag_duration)
         pyautogui.mouseUp()
-        time.sleep(0.5)  # pause between checks
+        time.sleep(.5)
+
+    # Read name
+    for i in range(5):
+        name, conf = read_name_from_region()
+        print(f"Detected name: {name!r}")
+
+        if not name:
+            print("⚠️ No valid name detected — skipping.")
+            exit_back()
+            return
+
+        matched, score = match_to_whitelist(name)
+        if matched:
+            pyautogui.click(approve_btn)
+            print(f"✅ Approved (OCR: '{name}' → '{matched}', score={score})")
+            time.sleep(4)
+        else:
+            print(f"❌ Not in whitelist (OCR: '{name}')")
+            if REJECT_UNKNOWN:
+                pyautogui.click(reject_btn)
+                time.sleep(4)
+                pyautogui.click(close_confirm)
+                time.sleep(4)
+    time.sleep(0.5)
 
     # Exit back to main screen
     exit_back()
@@ -147,4 +152,4 @@ def process_slot(slot_pos):
 while True:
     for slot in slots:
         process_slot(slot)
-    time.sleep(60)
+    time.sleep(15)
