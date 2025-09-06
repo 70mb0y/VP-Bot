@@ -25,7 +25,7 @@ MouseLocation.py will assist in inputting the proper locations in the code where
 
 ScrollUp.py will assist with the "list" when it is longer than the initial display.  You will need to use MouseLocation.py to identify where the mouse position needs to start. Then also, the top item on the list and then measure to the bottom of the list box, not the actual list.  Do the math to identify how much Y is from the top of this box to the bottom and this will be the input in the script to allow the drag motion to occur properly.
 
-TestOCR.py will assist in ensuring the alliance name is being read properly and may require some movement on location to get the alliance name inside the "box".
+TestOCR.py will assist in ensuring the alliance name is being read properly and may require some movement on location to get the alliance name inside the "box". Recommend the red box be aligned to the [] on the left and right of the alliance name to allow room for proper reading.
 
 VPBot.py is the main code that will need updated with:
  - Line 13: the file path to tesseract.exe
@@ -33,6 +33,7 @@ VPBot.py is the main code that will need updated with:
  - Line 34: The name/list region, where it picks up the alliance name within the "list"
  - Line 19-23: locations for the titles to be selected
  - Line 27-31: the "list" access button, where the approve, reject, and confirm buttons are, and where to close/exit out of the windows.
+ - Line 38:  modify to be higher or lower based off of desired results and accuracy of the OCR reading.
  - Line 41-44: the "click drag" configuration.  This will help in preventing location issues during the approvals when the list grows longer than the initial screen load length.
 
 
